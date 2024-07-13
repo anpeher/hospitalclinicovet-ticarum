@@ -1,11 +1,16 @@
 package com.hospitalclinicovet.servicio;
 
+import com.hospitalclinicovet.dto.NuevoIngresoDTO;
 import com.hospitalclinicovet.modelo.Estado;
 import com.hospitalclinicovet.modelo.Ingreso;
+import com.hospitalclinicovet.modelo.Mascota;
 import com.hospitalclinicovet.repositorio.RepositorioIngreso;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +19,7 @@ import java.util.Optional;
 public class ServicioIngresoApl implements ServicioIngreso{
 
     private final RepositorioIngreso repositorioIngreso;
+    private MascotaServicio mascotaServicio;
 
     @Override
     public List<Ingreso> listaIngresos() {
@@ -21,7 +27,14 @@ public class ServicioIngresoApl implements ServicioIngreso{
     }
 
     @Override
-    public Ingreso nuevoIngreso(Ingreso ingreso) {
+    public Ingreso nuevoIngreso(NuevoIngresoDTO ingresoDTO) {
+
+        Mascota mascota = mascotaServicio.obtenerMascota(ingresoDTO.getIdMascota())
+                .orElseThrow(() -> new IllegalArgumentException("Mascota no encontrada"));
+        if(!mascota.isActiva()){
+            throw new IllegalArgumentException("La mascota no está activa.");
+        }
+        Ingreso ingreso = getIngreso(ingresoDTO, mascota);
         return repositorioIngreso.save(ingreso);
     }
 
@@ -40,5 +53,20 @@ public class ServicioIngresoApl implements ServicioIngreso{
         ingreso.setEstado(Estado.ANULADO);
         repositorioIngreso.save(ingreso);
         return true;
+    }
+
+    private static Ingreso getIngreso(NuevoIngresoDTO ingresoDTO, Mascota mascota) {
+        Ingreso ingreso = new Ingreso();
+        ingreso.setEstado(Estado.ALTA);
+        try {
+            LocalDate fechaAlta = LocalDate.parse(ingresoDTO.getFechaAlta(), DateTimeFormatter.ISO_LOCAL_DATE);
+            ingreso.setFechaAlta(fechaAlta);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Formato de fecha inválido. Debe ser yyyy-MM-dd");
+        }
+
+        ingreso.setMascota(mascota);
+        ingreso.setDniResponsable(mascota.getDniResponsable());
+        return ingreso;
     }
 }
