@@ -1,67 +1,47 @@
-package com.hospitalclinicovet.modelo;
+package com.hospitalclinicovet.dto;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.hospitalclinicovet.ReglasValidacion.ValidDate;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
-import java.time.LocalDate;
-import java.time.Period;
-
-
-@Entity
-@Table(name = "mascota")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class Mascota {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class MascotaDTO {
 
+    @NotNull(message = "la especie es obligatoria")
     @NotBlank(message = "la especie es obligatoria")
     @Size(max = 100, message = "el campo especie no puede contener más de 100 palabras")
     @Pattern(regexp = "[A-Za-z- ñ]+", message = "El campo especie solo piede contener letras, espacios en blanco y el caracter -")
-    @Column(nullable = false)
     private String especie;
 
+    @NotNull(message = "la raza es obligatoria")
     @NotBlank(message = "la raza es obligatoria")
     @Size(max = 100, message = "el campo raza no puede contener más de 100 palabras")
     @Pattern(regexp = "[A-Za-z- ñ]+", message = "El campo raza solo piede contener letras, espacios en blanco y el caracter -")
-    @Column(nullable = false)
     private String raza;
 
     @Transient
     private int edad;
 
-    @Past(message = "la fecha de nacimiento no puede ser de una fecha futura")
-    @Column(name = "fecha_nacimiento",nullable = false)
-    private LocalDate fechaNacimiento;
+    @NotNull(message = "La fecha de nacimiento es obligatoria")
+    @NotBlank(message = "La fecha de nacimiento es obligatoria")
+    @ValidDate
+    @Pattern(regexp = "^20\\d{2}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])$", message = "Formato de fecha inválido, debe ser yyyy-MM-dd")
+    private String fechaNacimiento;
 
+    @NotNull(message = "el codigo de identificaciónes obligatorio")
     @NotBlank(message = "el codigo de identificaciónes obligatorio")
     @Size(max = 100, message = "el campo codigo identificación no puede contener más de 100 palabras")
     @Pattern(regexp = "\\d{3}[A-Z]{3}", message = "formato codigo de identificacion invalido, debe ser tres numeros y tres letras en mayúscula")
-    @Column(name = "codigo_identificacion", nullable = false, unique = true)
     private String codigoIdentificacion;
 
+    @NotNull(message = "el dni del responsable obligatorio")
     @NotBlank(message = "el dni del responsable obligatorio")
     @Size(max = 100, message = "el campo dni del responsable no puede contener más de 100 palabras")
     @Pattern(regexp = "\\d{8}[A-Z]", message = "formato dni incorrecto")
-    @Column(name = "dni_responsable", nullable = false)
     private String dniResponsable;
 
-    @Column(nullable = false)
     private boolean activa = true;
-
-    public int getEdad() {
-        return Period.between(this.fechaNacimiento, LocalDate.now()).getYears();
-    }
 }
