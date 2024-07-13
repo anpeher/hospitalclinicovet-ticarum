@@ -6,7 +6,6 @@ import com.hospitalclinicovet.modelo.Mascota;
 import com.hospitalclinicovet.servicio.MascotaServicio;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.aspectj.bridge.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
