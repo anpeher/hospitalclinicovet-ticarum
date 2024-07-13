@@ -42,7 +42,16 @@ public class ServicioMascotaApl implements MascotaServicio {
 
     @Override
     public Optional<Mascota> ObtenerMascota(Long id) {
-        return Optional.of(repositorioMascota.findById(id).orElseThrow(() ->  new RuntimeException("Mascota no existe")));
+        if (repositorioMascota.existsById(id)) {
+            Optional<Mascota> mascota = repositorioMascota.findById(id);
+            if (mascota.isPresent() && mascota.get().isActiva()) {
+                return mascota;
+            } else {
+                throw new IllegalArgumentException("La mascota no está activa.");
+            }
+        } else {
+            throw new IllegalArgumentException("La mascota no existe.");
+        }
     }
 
     @Override
@@ -52,14 +61,24 @@ public class ServicioMascotaApl implements MascotaServicio {
 
     @Override
     public boolean eliminarMascota(Long id) {
-        Mascota mascota = repositorioMascota.findById(id).orElseThrow(() ->  new RuntimeException("Mascota no existe"));
-        mascota.setActiva(false);
-        repositorioMascota.save(mascota);
-        return true;
+
+        if (repositorioMascota.existsById(id)) {
+            Optional<Mascota> mascotaOptional = repositorioMascota.findById(id);
+            if (mascotaOptional.isPresent() && mascotaOptional.get().isActiva()) {
+                Mascota mascota = mascotaOptional.get();
+                mascota.setActiva(false);
+                repositorioMascota.save(mascota);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            throw new IllegalArgumentException("La mascota no existe.");
+        }
     }
 
     @Override
     public Optional<Mascota> obtenerMascota(Long id) {
-        return Optional.of(repositorioMascota.findById(id).orElseThrow(() ->  new RuntimeException("Mascota no existe")));
+        return Optional.of(repositorioMascota.findById(id).orElseThrow(() ->  new IllegalArgumentException("la mascota no existe")));
     }
 }

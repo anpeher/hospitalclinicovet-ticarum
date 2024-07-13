@@ -35,15 +35,24 @@ public class ControladorMascota {
 
     @GetMapping("/{idMascota}")
     public ResponseEntity obtenerMascota(@PathVariable("idMascota") Long id){
-        return new ResponseEntity(mascotaServicio.ObtenerMascota(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(mascotaServicio.ObtenerMascota(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{idMascota}")
-    public ResponseEntity<Void> eliminarMascota(@PathVariable("idMascota") Long id){
-        if (mascotaServicio.eliminarMascota(id)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity eliminarMascota(@PathVariable("idMascota") Long id){
+        try {
+            if (mascotaServicio.eliminarMascota(id)) {
+                return ResponseEntity.ok().build();
+            } else {
+                return new ResponseEntity<>("La mascota no esta activa", HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+
     }
 }
