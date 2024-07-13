@@ -59,11 +59,10 @@ public class ServicioIngresoApl implements ServicioIngreso {
     }
 
     @Override
-    public boolean eliminarIngreso(Long id) {
+    public void eliminarIngreso(Long id) {
         Ingreso ingreso = repositorioIngreso.findById(id).orElseThrow(() ->  new IllegalArgumentException("Ingreso no existe"));
         ingreso.setEstado(Estado.ANULADO);
         repositorioIngreso.save(ingreso);
-        return true;
     }
 
     private static Ingreso getIngreso(NuevoIngresoDTO ingresoDTO, Mascota mascota) {

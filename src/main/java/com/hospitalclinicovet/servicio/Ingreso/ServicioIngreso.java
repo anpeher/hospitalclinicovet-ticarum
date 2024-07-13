@@ -15,6 +15,6 @@ public interface ServicioIngreso {
 
     Optional<Ingreso> ModificarIngreso(Long id, ModIngresoDTO modIngresoDTO);
 
-    boolean eliminarIngreso(Long id);
+    void eliminarIngreso(Long id);
 
 }
