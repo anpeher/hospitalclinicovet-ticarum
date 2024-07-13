@@ -11,9 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
 @RestController
@@ -25,23 +22,15 @@ public class ControladorMascota {
 
     @PostMapping
     public ResponseEntity guardarMascota(@Valid @RequestBody MascotaDTO mascotaDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(Objects.requireNonNull(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()), HttpStatus.BAD_REQUEST);
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
-        Mascota mascota = new Mascota();
-        mascota.setEspecie(mascotaDTO.getEspecie());
-        mascota.setRaza(mascotaDTO.getRaza());
-        mascota.setCodigoIdentificacion(mascotaDTO.getCodigoIdentificacion());
-        mascota.setDniResponsable(mascotaDTO.getDniResponsable());
-        mascota.setActiva(mascotaDTO.isActiva());
-
         try {
-            LocalDate fechaNacimiento = LocalDate.parse(mascotaDTO.getFechaNacimiento(), DateTimeFormatter.ISO_LOCAL_DATE);
-            mascota.setFechaNacimiento(fechaNacimiento);
-        } catch (DateTimeParseException e) {
-            return new ResponseEntity<>("Formato de fecha inválido, debe ser yyyy-MM-dd", HttpStatus.BAD_REQUEST);
+            Mascota mascota = mascotaServicio.agregarMascota(mascotaDTO);
+            return new ResponseEntity<>(mascota, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(mascotaServicio.agregarMascota(mascota), HttpStatus.OK);
     }
 
     @GetMapping("/{idMascota}")
