@@ -1,6 +1,7 @@
 package com.hospitalclinicovet.servicio;
 
 import com.hospitalclinicovet.dto.MascotaDTO;
+import com.hospitalclinicovet.modelo.Ingreso;
 import com.hospitalclinicovet.modelo.Mascota;
 
 import java.util.List;
@@ -10,11 +11,11 @@ public interface MascotaServicio {
 
     Mascota agregarMascota(MascotaDTO mascotaDTO);
 
-    Optional<Mascota> ObtenerMascota(Long id);
+    Optional<Mascota> ObtenerMascota(long id);
 
-    List<Mascota> ListarMascotas();
+    List<Ingreso> ListarIngresoMascotas(long id);
 
-    boolean eliminarMascota(Long id);
+    boolean eliminarMascota(long id);
 
-    Optional<Mascota> obtenerMascota(Long id);
+    Optional<Mascota> obtenerMascota(long id);
 }

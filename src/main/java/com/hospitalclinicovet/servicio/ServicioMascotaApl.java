@@ -1,8 +1,11 @@
 package com.hospitalclinicovet.servicio;
 
 import com.hospitalclinicovet.dto.MascotaDTO;
+import com.hospitalclinicovet.modelo.Ingreso;
 import com.hospitalclinicovet.modelo.Mascota;
+import com.hospitalclinicovet.repositorio.RepositorioIngreso;
 import com.hospitalclinicovet.repositorio.RepositorioMascota;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,7 @@ import java.util.Optional;
 public class ServicioMascotaApl implements MascotaServicio {
 
     private final RepositorioMascota repositorioMascota;
+    private final RepositorioIngreso repositorioIngreso;
 
     @Override
     public Mascota agregarMascota(MascotaDTO mascotaDTO) {
@@ -41,7 +45,7 @@ public class ServicioMascotaApl implements MascotaServicio {
     }
 
     @Override
-    public Optional<Mascota> ObtenerMascota(Long id) {
+    public Optional<Mascota> ObtenerMascota(long id) {
         if (repositorioMascota.existsById(id)) {
             Optional<Mascota> mascota = repositorioMascota.findById(id);
             if (mascota.isPresent() && mascota.get().isActiva()) {
@@ -55,12 +59,22 @@ public class ServicioMascotaApl implements MascotaServicio {
     }
 
     @Override
-    public List<Mascota> ListarMascotas() {
-        return null;
+    public List<Ingreso> ListarIngresoMascotas(long id) {
+        if (repositorioMascota.existsById(id)) {
+            Optional<Mascota> mascota = repositorioMascota.findById(id);
+            if (mascota.isPresent() && mascota.get().isActiva()) {
+                return repositorioIngreso.findByMascotaId(id);
+            } else {
+                throw new IllegalArgumentException("La mascota no está activa.");
+            }
+        } else {
+            throw new IllegalArgumentException("La mascota no existe.");
+        }
     }
 
     @Override
-    public boolean eliminarMascota(Long id) {
+    @Transactional
+    public boolean eliminarMascota(long id) {
 
         if (repositorioMascota.existsById(id)) {
             Optional<Mascota> mascotaOptional = repositorioMascota.findById(id);
@@ -78,7 +92,7 @@ public class ServicioMascotaApl implements MascotaServicio {
     }
 
     @Override
-    public Optional<Mascota> obtenerMascota(Long id) {
+    public Optional<Mascota> obtenerMascota(long id) {
         return Optional.of(repositorioMascota.findById(id).orElseThrow(() ->  new IllegalArgumentException("la mascota no existe")));
     }
 }

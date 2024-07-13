@@ -2,6 +2,7 @@ package com.hospitalclinicovet.Controlador;
 
 
 import com.hospitalclinicovet.dto.MascotaDTO;
+import com.hospitalclinicovet.modelo.Ingreso;
 import com.hospitalclinicovet.modelo.Mascota;
 import com.hospitalclinicovet.servicio.MascotaServicio;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -37,6 +39,19 @@ public class ControladorMascota {
     public ResponseEntity obtenerMascota(@PathVariable("idMascota") Long id){
         try {
             return new ResponseEntity<>(mascotaServicio.ObtenerMascota(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{idIngreso}/ingreso")
+    public ResponseEntity ingresosMascota(@PathVariable("idIngreso") Long id){
+        try {
+            List<Ingreso> Ingresos = mascotaServicio.ListarIngresoMascotas(id);
+            if (Ingresos.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(Ingresos,HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
