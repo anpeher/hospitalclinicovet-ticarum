@@ -45,14 +45,18 @@ public class ServicioIngresoApl implements ServicioIngreso {
             throw new IllegalArgumentException("El ingreso no existe.");
         }
         return repositorioIngreso.findById(id).map(ingresoMemoria -> {
-            ingresoMemoria.setFechaFinalizacion(stringToDate(modIngresoDTO.getFechaFinalizacion()));
-            if (!EnumSet.of(Estado.ALTA, Estado.HOSPITALIZACION, Estado.FINALIZADO).contains(modIngresoDTO.getEstado())) {
-                throw new IllegalArgumentException("Estado inválido.");
+            if (modIngresoDTO.getFechaFinalizacion() != null) {
+                ingresoMemoria.setFechaFinalizacion(stringToDate(modIngresoDTO.getFechaFinalizacion()));
             }
-            if (modIngresoDTO.getEstado() == Estado.FINALIZADO && ingresoMemoria.getFechaFinalizacion() == null) {
-                throw new IllegalArgumentException("Un ingreso en estado FINALIZADO debe tener una fecha de finalización.");
+            if (modIngresoDTO.getEstado() != null){
+                if (!EnumSet.of(Estado.ALTA, Estado.HOSPITALIZACION, Estado.FINALIZADO).contains(modIngresoDTO.getEstado())) {
+                    throw new IllegalArgumentException("Estado inválido.");
+                }
+                if (modIngresoDTO.getEstado() == Estado.FINALIZADO && ingresoMemoria.getFechaFinalizacion() == null) {
+                    throw new IllegalArgumentException("Un ingreso al que deseas cambiar el estado ha \"FINALIZADO\" debe tener una fecha de finalización.");
+                }
+                ingresoMemoria.setEstado(modIngresoDTO.getEstado());
             }
-            ingresoMemoria.setEstado(modIngresoDTO.getEstado());
             return repositorioIngreso.save(ingresoMemoria);
         });
 
