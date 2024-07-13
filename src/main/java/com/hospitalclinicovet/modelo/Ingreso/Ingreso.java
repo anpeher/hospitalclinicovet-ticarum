@@ -1,5 +1,6 @@
-package com.hospitalclinicovet.modelo;
+package com.hospitalclinicovet.modelo.Ingreso;
 
+import com.hospitalclinicovet.modelo.Mascota.Mascota;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

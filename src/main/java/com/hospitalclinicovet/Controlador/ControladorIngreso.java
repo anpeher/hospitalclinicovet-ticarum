@@ -1,8 +1,9 @@
 package com.hospitalclinicovet.Controlador;
 
-import com.hospitalclinicovet.dto.NuevoIngresoDTO;
-import com.hospitalclinicovet.modelo.Ingreso;
-import com.hospitalclinicovet.servicio.ServicioIngreso;
+import com.hospitalclinicovet.dto.Ingreso.ModIngresoDTO;
+import com.hospitalclinicovet.dto.Ingreso.NuevoIngresoDTO;
+import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.servicio.Ingreso.ServicioIngreso;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,10 +36,14 @@ public class ControladorIngreso {
     }
 
     @PutMapping("/{idIngreso}")
-    public ResponseEntity ModiificarIngreso(@PathVariable("idIngreso") Long id, @RequestBody Ingreso ingreso) {
-        Optional<Ingreso> ingresoActualizado = servicioIngreso.ModificarIngreso(id, ingreso);
-        return ingresoActualizado.map(ingreso1 -> new ResponseEntity<>(ingreso1, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity ModificarIngreso(@PathVariable("idIngreso") Long id, @RequestBody ModIngresoDTO modIngresoDTO) {
+        try{
+            Optional<Ingreso> ingresoActualizado = servicioIngreso.ModificarIngreso(id, modIngresoDTO);
+            return ingresoActualizado.map(ingreso1 -> new ResponseEntity<>(ingreso1, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping
@@ -47,11 +52,12 @@ public class ControladorIngreso {
     }
 
     @DeleteMapping("/{idIngreso}")
-    public ResponseEntity<Void> eliminarIngreso(@PathVariable("idIngreso") Long id){
-        if (servicioIngreso.eliminarIngreso(id)) {
+    public ResponseEntity eliminarIngreso(@PathVariable("idIngreso") Long id){
+        try{
+            servicioIngreso.eliminarIngreso(id);
             return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }

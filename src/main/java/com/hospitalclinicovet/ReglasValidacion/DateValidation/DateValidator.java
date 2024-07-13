@@ -1,4 +1,4 @@
-package com.hospitalclinicovet.ReglasValidacion;
+package com.hospitalclinicovet.ReglasValidacion.DateValidation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

@@ -1,10 +1,10 @@
 package com.hospitalclinicovet.Controlador;
 
 
-import com.hospitalclinicovet.dto.MascotaDTO;
-import com.hospitalclinicovet.modelo.Ingreso;
-import com.hospitalclinicovet.modelo.Mascota;
-import com.hospitalclinicovet.servicio.MascotaServicio;
+import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
+import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.modelo.Mascota.Mascota;
+import com.hospitalclinicovet.servicio.Mascota.MascotaServicio;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.hospitalclinicovet.modelo;
+package com.hospitalclinicovet.modelo.Mascota;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;

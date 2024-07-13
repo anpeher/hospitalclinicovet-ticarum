@@ -1,6 +1,6 @@
-package com.hospitalclinicovet.dto;
+package com.hospitalclinicovet.dto.Mascota;
 
-import com.hospitalclinicovet.ReglasValidacion.ValidDate;
+import com.hospitalclinicovet.ReglasValidacion.DateValidation.ValidDate;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.*;
 import lombok.Getter;

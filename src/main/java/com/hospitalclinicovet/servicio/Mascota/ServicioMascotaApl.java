@@ -1,8 +1,8 @@
-package com.hospitalclinicovet.servicio;
+package com.hospitalclinicovet.servicio.Mascota;
 
-import com.hospitalclinicovet.dto.MascotaDTO;
-import com.hospitalclinicovet.modelo.Ingreso;
-import com.hospitalclinicovet.modelo.Mascota;
+import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
+import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.modelo.Mascota.Mascota;
 import com.hospitalclinicovet.repositorio.RepositorioIngreso;
 import com.hospitalclinicovet.repositorio.RepositorioMascota;
 import jakarta.transaction.Transactional;
