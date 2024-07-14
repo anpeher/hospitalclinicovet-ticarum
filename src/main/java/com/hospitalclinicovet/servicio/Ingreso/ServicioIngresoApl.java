@@ -1,5 +1,6 @@
 package com.hospitalclinicovet.servicio.Ingreso;
 
+import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Ingreso.ModIngresoDTO;
 import com.hospitalclinicovet.dto.Ingreso.NuevoIngresoDTO;
 import com.hospitalclinicovet.modelo.Ingreso.Estado;
@@ -30,13 +31,12 @@ public class ServicioIngresoApl implements ServicioIngreso {
     @Override
     public Ingreso nuevoIngreso(NuevoIngresoDTO ingresoDTO) {
 
-        Mascota mascota = mascotaServicio.obtenerMascota(ingresoDTO.getIdMascota())
+        Mascota mascota = mascotaServicio.ObtenerMascota(ingresoDTO.getIdMascota())
                 .orElseThrow(() -> new IllegalArgumentException("Mascota no encontrada"));
         if(!mascota.isActiva()){
             throw new IllegalArgumentException("La mascota no está activa.");
         }
-        Ingreso ingreso = getIngreso(ingresoDTO, mascota);
-        return repositorioIngreso.save(ingreso);
+        return repositorioIngreso.save(getIngreso(ingresoDTO, mascota));
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ServicioIngresoApl implements ServicioIngreso {
         if (repositorioIngreso.existsById(id)) {
             return true;
         } else {
-            throw new IllegalArgumentException("El ingreso no existe.");
+            throw new ResourceNotFoundException("El ingreso no existe.");
         }
     }
 

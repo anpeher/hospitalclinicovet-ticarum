@@ -1,5 +1,6 @@
 package com.hospitalclinicovet.Controlador;
 
+import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Ingreso.ModIngresoDTO;
 import com.hospitalclinicovet.dto.Ingreso.NuevoIngresoDTO;
 import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
@@ -43,6 +44,8 @@ public class ControladorIngreso {
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -55,9 +58,9 @@ public class ControladorIngreso {
     public ResponseEntity eliminarIngreso(@PathVariable("idIngreso") Long id){
         try{
             servicioIngreso.eliminarIngreso(id);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }

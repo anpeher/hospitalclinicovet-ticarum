@@ -15,7 +15,6 @@ public interface MascotaServicio {
 
     List<Ingreso> ListarIngresoMascotas(long id);
 
-    boolean eliminarMascota(long id);
+    void eliminarMascota(long id);
 
-    Optional<Mascota> obtenerMascota(long id);
 }

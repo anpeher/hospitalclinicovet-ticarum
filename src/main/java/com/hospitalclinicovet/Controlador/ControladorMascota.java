@@ -1,6 +1,7 @@
 package com.hospitalclinicovet.Controlador;
 
 
+import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
 import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
 import com.hospitalclinicovet.modelo.Mascota.Mascota;
@@ -40,6 +41,8 @@ public class ControladorMascota {
         try {
             return new ResponseEntity<>(mascotaServicio.ObtenerMascota(id), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -53,6 +56,8 @@ public class ControladorMascota {
             }
             return new ResponseEntity<>(Ingresos,HttpStatus.OK);
         } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -60,12 +65,11 @@ public class ControladorMascota {
     @DeleteMapping("/{idMascota}")
     public ResponseEntity eliminarMascota(@PathVariable("idMascota") Long id){
         try {
-            if (mascotaServicio.eliminarMascota(id)) {
-                return ResponseEntity.ok().build();
-            } else {
-                return new ResponseEntity<>("La mascota no esta activa", HttpStatus.NOT_FOUND);
-            }
+            mascotaServicio.eliminarMascota(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 

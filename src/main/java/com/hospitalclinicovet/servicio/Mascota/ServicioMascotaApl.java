@@ -1,5 +1,6 @@
 package com.hospitalclinicovet.servicio.Mascota;
 
+import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
 import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
 import com.hospitalclinicovet.modelo.Mascota.Mascota;
@@ -28,71 +29,58 @@ public class ServicioMascotaApl implements MascotaServicio {
         if (existingMascota.isPresent()) {
             throw new IllegalArgumentException("El código de identificación ya existe.");
         }
+        return repositorioMascota.save(getMascota(mascotaDTO));
+    }
+
+    @Override
+    public Optional<Mascota> ObtenerMascota(long id) {
+        return Optional.of(mascotaValida(id));
+    }
+
+    @Override
+    public List<Ingreso> ListarIngresoMascotas(long id) {
+        mascotaValida(id);
+        return repositorioIngreso.findByMascotaId(id);
+    }
+
+    @Override
+    @Transactional
+    public void eliminarMascota(long id) {
+        Mascota mascota = mascotaValida(id);
+        mascota.setActiva(false);
+        repositorioMascota.save(mascota);
+    }
+
+    private Mascota mascotaValida(Long id){
+        if (repositorioMascota.existsById(id)) {
+            Optional<Mascota> mascota = repositorioMascota.findById(id);
+            if (mascota.isPresent() && mascota.get().isActiva()) {
+                return mascota.get();
+            } else {
+                throw new IllegalArgumentException("La mascota no está activa.");
+            }
+        } else {
+            throw new ResourceNotFoundException("La mascota no existe.");
+        }
+    }
+
+    private static Mascota getMascota(MascotaDTO mascotaDTO) {
         Mascota mascota = new Mascota();
         mascota.setEspecie(mascotaDTO.getEspecie());
         mascota.setRaza(mascotaDTO.getRaza());
         mascota.setCodigoIdentificacion(mascotaDTO.getCodigoIdentificacion());
         mascota.setDniResponsable(mascotaDTO.getDniResponsable());
         mascota.setActiva(mascotaDTO.isActiva());
-
-        try {
-            LocalDate fechaNacimiento = LocalDate.parse(mascotaDTO.getFechaNacimiento(), DateTimeFormatter.ISO_LOCAL_DATE);
-            mascota.setFechaNacimiento(fechaNacimiento);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Formato de fecha inválido. Debe ser yyyy-MM-dd");
-        }
-        return repositorioMascota.save(mascota);
+        mascota.setFechaNacimiento(stringToDate(mascotaDTO.getFechaNacimiento()));
+        return mascota;
     }
 
-    @Override
-    public Optional<Mascota> ObtenerMascota(long id) {
-        if (repositorioMascota.existsById(id)) {
-            Optional<Mascota> mascota = repositorioMascota.findById(id);
-            if (mascota.isPresent() && mascota.get().isActiva()) {
-                return mascota;
-            } else {
-                throw new IllegalArgumentException("La mascota no está activa.");
-            }
-        } else {
-            throw new IllegalArgumentException("La mascota no existe.");
-        }
+    private static LocalDate stringToDate(String fechaString){
+    try {
+        return LocalDate.parse(fechaString, DateTimeFormatter.ISO_LOCAL_DATE);
+    } catch (DateTimeParseException e) {
+        throw new IllegalArgumentException("Formato de fecha inválido. Debe ser yyyy-MM-dd");
+    }
     }
 
-    @Override
-    public List<Ingreso> ListarIngresoMascotas(long id) {
-        if (repositorioMascota.existsById(id)) {
-            Optional<Mascota> mascota = repositorioMascota.findById(id);
-            if (mascota.isPresent() && mascota.get().isActiva()) {
-                return repositorioIngreso.findByMascotaId(id);
-            } else {
-                throw new IllegalArgumentException("La mascota no está activa.");
-            }
-        } else {
-            throw new IllegalArgumentException("La mascota no existe.");
-        }
-    }
-
-    @Override
-    @Transactional
-    public boolean eliminarMascota(long id) {
-
-        if (repositorioMascota.existsById(id)) {
-            Optional<Mascota> mascotaOptional = repositorioMascota.findById(id);
-            if (mascotaOptional.isPresent() && mascotaOptional.get().isActiva()) {
-                Mascota mascota = mascotaOptional.get();
-                mascota.setActiva(false);
-                repositorioMascota.save(mascota);
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            throw new IllegalArgumentException("La mascota no existe.");
-        }
-    }
-
-    @Override
-    public Optional<Mascota> obtenerMascota(long id) {
-        return Optional.of(repositorioMascota.findById(id).orElseThrow(() ->  new IllegalArgumentException("la mascota no existe")));
-    }
 }
