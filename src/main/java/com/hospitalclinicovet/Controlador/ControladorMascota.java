@@ -40,7 +40,7 @@ public class ControladorMascota {
     @GetMapping("/{idMascota}")
     public ResponseEntity obtenerMascota(@PathVariable("idMascota") Long id){
         try {
-            return new ResponseEntity<>(mascotaServicio.ObtenerMascota(id), HttpStatus.OK);
+            return new ResponseEntity<>(mascotaServicio.obtenerMascota(id), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException e) {
@@ -51,7 +51,7 @@ public class ControladorMascota {
     @GetMapping("/{idIngreso}/ingreso")
     public ResponseEntity ingresosMascota(@PathVariable("idIngreso") Long id){
         try {
-            List<Ingreso> Ingresos = mascotaServicio.ListarIngresoMascotas(id);
+            List<Ingreso> Ingresos = mascotaServicio.listarIngresoMascotas(id);
             if (Ingresos.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }

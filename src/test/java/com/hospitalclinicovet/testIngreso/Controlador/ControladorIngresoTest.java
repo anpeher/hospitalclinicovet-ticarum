@@ -141,7 +141,7 @@ public class ControladorIngresoTest {
         ingreso.setMascota(mascota);
         ingreso.setDniResponsable("12345678A");
 
-        given(servicioIngreso.ModificarIngreso(anyLong(), any(ModIngresoDTO.class))).willReturn(Optional.of(ingreso));
+        given(servicioIngreso.modificarIngreso(anyLong(), any(ModIngresoDTO.class))).willReturn(Optional.of(ingreso));
 
         mockMvc.perform(put("/ingreso/{idIngreso}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +155,7 @@ public class ControladorIngresoTest {
         ModIngresoDTO modIngresoDTO = new ModIngresoDTO();
         modIngresoDTO.setEstado("fallo");
 
-        given(servicioIngreso.nuevoIngreso(any(NuevoIngresoDTO.class))).willThrow(new IllegalArgumentException());
+        given(servicioIngreso.modificarIngreso(anyLong(), any(ModIngresoDTO.class))).willThrow(new IllegalArgumentException());
 
         mockMvc.perform(put("/ingreso/{idIngreso}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)

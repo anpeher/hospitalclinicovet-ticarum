@@ -33,12 +33,12 @@ public class ServicioMascotaApl implements MascotaServicio {
     }
 
     @Override
-    public Optional<Mascota> ObtenerMascota(long id) {
+    public Optional<Mascota> obtenerMascota(long id) {
         return Optional.of(mascotaValida(id));
     }
 
     @Override
-    public List<Ingreso> ListarIngresoMascotas(long id) {
+    public List<Ingreso> listarIngresoMascotas(long id) {
         mascotaValida(id);
         return repositorioIngreso.findByMascotaId(id);
     }

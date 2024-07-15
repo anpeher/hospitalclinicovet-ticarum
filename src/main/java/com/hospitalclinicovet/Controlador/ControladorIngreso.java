@@ -38,12 +38,12 @@ public class ControladorIngreso {
     }
 
     @PutMapping("/{idIngreso}")
-    public ResponseEntity ModificarIngreso(@PathVariable("idIngreso") Long id,@Valid @RequestBody ModIngresoDTO modIngresoDTO, BindingResult bindingResult) {
+    public ResponseEntity modificarIngreso(@PathVariable("idIngreso") Long id,@Valid @RequestBody ModIngresoDTO modIngresoDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new Message(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }
         try {
-            Optional<Ingreso> ingreso = servicioIngreso.ModificarIngreso(id, modIngresoDTO);
+            Optional<Ingreso> ingreso = servicioIngreso.modificarIngreso(id, modIngresoDTO);
             return ResponseEntity.ok(ingreso);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -53,7 +53,7 @@ public class ControladorIngreso {
     }
 
     @GetMapping
-    public ResponseEntity ListarIngresos(){
+    public ResponseEntity listarIngresos(){
         return new ResponseEntity<>(servicioIngreso.listaIngresos(), HttpStatus.OK);
     }
 

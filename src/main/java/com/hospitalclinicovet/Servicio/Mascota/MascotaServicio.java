@@ -11,9 +11,9 @@ public interface MascotaServicio {
 
     Mascota agregarMascota(MascotaDTO mascotaDTO);
 
-    Optional<Mascota> ObtenerMascota(long id);
+    Optional<Mascota> obtenerMascota(long id);
 
-    List<Ingreso> ListarIngresoMascotas(long id);
+    List<Ingreso> listarIngresoMascotas(long id);
 
     void eliminarMascota(long id);
 

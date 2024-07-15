@@ -101,7 +101,7 @@ public class ControladorMascotaTest {
         mascota.setCodigoIdentificacion("234ASD");
         mascota.setDniResponsable("45675467S");
 
-        given(mascotaServicio.ObtenerMascota(id)).willReturn(Optional.of(mascota));
+        given(mascotaServicio.obtenerMascota(id)).willReturn(Optional.of(mascota));
 
         mockMvc.perform(get("/mascota/{idMascota}", id)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -118,7 +118,7 @@ public class ControladorMascotaTest {
     void testBuscarMascotaInexistente() throws Exception {
         Long id = 50L;
 
-        given(mascotaServicio.ObtenerMascota(id)).willThrow(new ResourceNotFoundException("La mascota no existe."));
+        given(mascotaServicio.obtenerMascota(id)).willThrow(new ResourceNotFoundException("La mascota no existe."));
 
         mockMvc.perform(get("/mascota/{idMascota}", id)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -130,7 +130,7 @@ public class ControladorMascotaTest {
     void testMascotaConIngresoInexistente() throws Exception {
         Long id = 1L;
 
-        given(mascotaServicio.ListarIngresoMascotas(id)).willReturn(Collections.emptyList());
+        given(mascotaServicio.listarIngresoMascotas(id)).willReturn(Collections.emptyList());
 
         mockMvc.perform(get("/mascota/{idIngreso}/ingreso", id)
                         .contentType(MediaType.APPLICATION_JSON))

@@ -67,13 +67,13 @@ public class ServicioIngresoTest {
 
         Ingreso ingreso = new Ingreso();
 
-        given(mascotaServicio.ObtenerMascota(1L)).willReturn(Optional.of(mascota));
+        given(mascotaServicio.obtenerMascota(1L)).willReturn(Optional.of(mascota));
         given(repositorioIngreso.save(any(Ingreso.class))).willReturn(ingreso);
 
         Ingreso resultado = ingresoServicio.nuevoIngreso(ingresoDTO);
 
         assertNotNull(resultado);
-        verify(mascotaServicio, times(1)).ObtenerMascota(1L);
+        verify(mascotaServicio, times(1)).obtenerMascota(1L);
         verify(repositorioIngreso, times(1)).save(any(Ingreso.class));
     }
 
@@ -88,12 +88,12 @@ public class ServicioIngresoTest {
         mascota.setActiva(true);
         mascota.setDniResponsable("32345478D");
 
-        given(mascotaServicio.ObtenerMascota(1L)).willReturn(Optional.of(mascota));
+        given(mascotaServicio.obtenerMascota(1L)).willReturn(Optional.of(mascota));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> ingresoServicio.nuevoIngreso(ingresoDTO));
 
         assertEquals("Solo el responsable de la mascota puede generar el ingreso.", exception.getMessage());
-        verify(mascotaServicio, times(1)).ObtenerMascota(1L);
+        verify(mascotaServicio, times(1)).obtenerMascota(1L);
         verify(repositorioIngreso, times(0)).save(any(Ingreso.class));
     }
 
@@ -106,12 +106,12 @@ public class ServicioIngresoTest {
         mascota.setId(1L);
         mascota.setActiva(false);
 
-        given(mascotaServicio.ObtenerMascota(1L)).willReturn(Optional.of(mascota));
+        given(mascotaServicio.obtenerMascota(1L)).willReturn(Optional.of(mascota));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> ingresoServicio.nuevoIngreso(ingresoDTO));
 
         assertEquals("La mascota no está activa.", exception.getMessage());
-        verify(mascotaServicio, times(1)).ObtenerMascota(1L);
+        verify(mascotaServicio, times(1)).obtenerMascota(1L);
         verify(repositorioIngreso, times(0)).save(any(Ingreso.class));
     }
 
@@ -129,7 +129,7 @@ public class ServicioIngresoTest {
         given(repositorioIngreso.findById(id)).willReturn(Optional.of(ingresoExistente));
         given(repositorioIngreso.save(any(Ingreso.class))).willReturn(ingresoExistente);
 
-        Optional<Ingreso> resultado = ingresoServicio.ModificarIngreso(id, modIngresoDTO);
+        Optional<Ingreso> resultado = ingresoServicio.modificarIngreso(id, modIngresoDTO);
 
         assertTrue(resultado.isPresent());
         assertEquals(Estado.FINALIZADO, resultado.get().getEstado());

@@ -84,7 +84,7 @@ public class ServicioMascotaTest {
         when(repositorioMascota.existsById(id)).thenReturn(true);
         when(repositorioMascota.findById(id)).thenReturn(Optional.of(mascota));
 
-        Optional<Mascota> mascotaResultadoOptional = servicioMascota.ObtenerMascota(id);
+        Optional<Mascota> mascotaResultadoOptional = servicioMascota.obtenerMascota(id);
         Mascota mascotaResultado = null;
         if(mascotaResultadoOptional.isPresent()) { mascotaResultado = mascotaResultadoOptional.get();}
 
@@ -181,7 +181,7 @@ public class ServicioMascotaTest {
 
         when(repositorioMascota.existsById(id)).thenReturn(false);
 
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> servicioMascota.ListarIngresoMascotas(id));
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> servicioMascota.listarIngresoMascotas(id));
 
         assertEquals("La mascota no existe.", exception.getMessage());
 

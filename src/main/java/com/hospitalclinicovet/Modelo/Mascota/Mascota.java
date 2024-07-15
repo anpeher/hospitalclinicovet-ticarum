@@ -2,10 +2,6 @@ package com.hospitalclinicovet.Modelo.Mascota;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -28,35 +24,25 @@ public class Mascota {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "la especie es obligatoria")
-    @Size(max = 100, message = "el campo especie no puede contener más de 100 palabras")
-    @Pattern(regexp = "[A-Za-z- ñ]+", message = "El campo especie solo piede contener letras, espacios en blanco y el caracter -")
     @Column(nullable = false)
     private String especie;
 
-    @NotBlank(message = "la raza es obligatoria")
-    @Size(max = 100, message = "el campo raza no puede contener más de 100 palabras")
-    @Pattern(regexp = "[A-Za-z- ñ]+", message = "El campo raza solo piede contener letras, espacios en blanco y el caracter -")
-    @Column(nullable = false)
+     @Column(nullable = false)
     private String raza;
 
     @Transient
     private int edad;
 
-    @Past(message = "la fecha de nacimiento no puede ser de una fecha futura")
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "fecha_nacimiento",nullable = false)
     private LocalDate fechaNacimiento;
 
-    @NotBlank(message = "el codigo de identificaciónes obligatorio")
-    @Size(max = 100, message = "el campo codigo identificación no puede contener más de 100 palabras")
-    @Pattern(regexp = "\\d{3}[A-Z]{3}", message = "formato codigo de identificacion invalido, debe ser tres numeros y tres letras en mayúscula")
+
     @Column(name = "codigo_identificacion", nullable = false, unique = true)
     private String codigoIdentificacion;
 
-    @NotBlank(message = "el dni del responsable obligatorio")
-    @Size(max = 100, message = "el campo dni del responsable no puede contener más de 100 palabras")
-    @Pattern(regexp = "\\d{8}[A-Z]", message = "formato dni incorrecto")
+
     @Column(name = "dni_responsable", nullable = false)
     private String dniResponsable;
 

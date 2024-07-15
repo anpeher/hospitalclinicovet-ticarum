@@ -13,7 +13,7 @@ public interface ServicioIngreso {
 
     Ingreso nuevoIngreso(NuevoIngresoDTO ingresoDTO);
 
-    Optional<Ingreso> ModificarIngreso(Long id, ModIngresoDTO modIngresoDTO);
+    Optional<Ingreso> modificarIngreso(Long id, ModIngresoDTO modIngresoDTO);
 
     void eliminarIngreso(Long id);
 

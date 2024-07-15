@@ -30,7 +30,7 @@ public class ServicioIngresoApl implements ServicioIngreso {
     @Override
     public Ingreso nuevoIngreso(NuevoIngresoDTO ingresoDTO) {
 
-        Mascota mascota = mascotaServicio.ObtenerMascota(ingresoDTO.getIdMascota())
+        Mascota mascota = mascotaServicio.obtenerMascota(ingresoDTO.getIdMascota())
                 .orElseThrow(() -> new IllegalArgumentException("Mascota no encontrada"));
         if(!mascota.isActiva()){
             throw new IllegalArgumentException("La mascota no está activa.");
@@ -42,7 +42,7 @@ public class ServicioIngresoApl implements ServicioIngreso {
     }
 
     @Override
-    public Optional<Ingreso> ModificarIngreso(Long id, ModIngresoDTO modIngresoDTO) {
+    public Optional<Ingreso> modificarIngreso(Long id, ModIngresoDTO modIngresoDTO) {
         return Optional.ofNullable(repositorioIngreso.findById(id).map(ingreso -> {
             if (modIngresoDTO.getFechaFinalizacion() != null) {
                 ingreso.setFechaFinalizacion(stringToDate(modIngresoDTO.getFechaFinalizacion()));
