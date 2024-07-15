@@ -1,7 +1,6 @@
 package com.hospitalclinicovet.Controlador;
 
 import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
-import com.hospitalclinicovet.Modelo.Ingreso.Estado;
 import com.hospitalclinicovet.dto.Ingreso.ModIngresoDTO;
 import com.hospitalclinicovet.dto.Ingreso.NuevoIngresoDTO;
 import com.hospitalclinicovet.dto.Respuesta.Message;

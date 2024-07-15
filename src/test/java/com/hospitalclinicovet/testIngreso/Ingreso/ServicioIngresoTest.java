@@ -42,7 +42,7 @@ public class ServicioIngresoTest {
     }
 
     @Test
-    void listaIngresosRetornaListaIngresos() {
+    void testListaIngresosRetornaListaIngresos() {
         List<Ingreso> ingresos = Arrays.asList(new Ingreso(), new Ingreso());
         given(repositorioIngreso.findAll()).willReturn(ingresos);
 
@@ -54,7 +54,7 @@ public class ServicioIngresoTest {
     }
 
     @Test
-    void nuevoIngresoCorrecto() {
+    void testNuevoIngresoCorrecto() {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
         ingresoDTO.setIdMascota(1L);
         ingresoDTO.setFechaAlta("2024-07-01");
@@ -78,7 +78,7 @@ public class ServicioIngresoTest {
     }
 
     @Test
-    void nuevoIngresoDniDistinto() {
+    void testNuevoIngresoDniDistinto() {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
         ingresoDTO.setIdMascota(1L);
         ingresoDTO.setDni("12345478A");
@@ -98,7 +98,7 @@ public class ServicioIngresoTest {
     }
 
     @Test
-    void nuevoIngresoMascotaNoActiva() {
+    void testNuevoIngresoMascotaNoActiva() {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
         ingresoDTO.setIdMascota(1L);
 
@@ -116,7 +116,7 @@ public class ServicioIngresoTest {
     }
 
     @Test
-    void ModificarIngresoCorrectamente() {
+    void testModificarIngresoCorrectamente() {
         Long id = 1L;
         ModIngresoDTO modIngresoDTO = new ModIngresoDTO();
         modIngresoDTO.setEstado("FINALIZADO");

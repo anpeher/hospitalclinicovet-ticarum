@@ -1,5 +1,6 @@
 package com.hospitalclinicovet.Modelo.Ingreso;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hospitalclinicovet.Modelo.Mascota.Mascota;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,9 +21,11 @@ public class Ingreso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "fecha_alta", nullable = false)
     private LocalDate fechaAlta = LocalDate.now();
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "fecha_finalizacion")
     private LocalDate fechaFinalizacion;
 

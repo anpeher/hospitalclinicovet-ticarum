@@ -43,7 +43,7 @@ public class ControladorMascotaTest {
     }
 
     @Test
-    void CrearMascotaCorrectamente() throws Exception {
+    void testCrearMascotaCorrectamente() throws Exception {
         MascotaDTO mascotaDTO = new MascotaDTO();
         mascotaDTO.setEspecie("pajaro");
         mascotaDTO.setRaza("colibri");
@@ -72,7 +72,7 @@ public class ControladorMascotaTest {
     }
 
     @Test
-    void CrearMascotaMalCodigo() throws Exception {
+    void testCrearMascotaMalCodigo() throws Exception {
         MascotaDTO mascotaDTO = new MascotaDTO();
         mascotaDTO.setEspecie("pajaro");
         mascotaDTO.setRaza("colibri");
@@ -91,7 +91,7 @@ public class ControladorMascotaTest {
     }
 
     @Test
-    void BuscarMascotaCorrectamente() throws Exception {
+    void testBuscarMascotaCorrectamente() throws Exception {
         Long id = 1L;
         Mascota mascota = new Mascota();
         mascota.setId(id);
@@ -115,7 +115,7 @@ public class ControladorMascotaTest {
     }
 
     @Test
-    void BuscarMascotaInexistente() throws Exception {
+    void testBuscarMascotaInexistente() throws Exception {
         Long id = 50L;
 
         given(mascotaServicio.ObtenerMascota(id)).willThrow(new ResourceNotFoundException("La mascota no existe."));
@@ -127,7 +127,7 @@ public class ControladorMascotaTest {
     }
 
     @Test
-    void MascotaConIngresoInexistente() throws Exception {
+    void testMascotaConIngresoInexistente() throws Exception {
         Long id = 1L;
 
         given(mascotaServicio.ListarIngresoMascotas(id)).willReturn(Collections.emptyList());
@@ -138,7 +138,7 @@ public class ControladorMascotaTest {
     }
 
     @Test
-    void EliminarCorrectamenteMascota() throws Exception {
+    void testEliminarCorrectamenteMascota() throws Exception {
         Long id = 1L;
 
         doNothing().when(mascotaServicio).eliminarMascota(id);
@@ -147,4 +147,6 @@ public class ControladorMascotaTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+
 }
