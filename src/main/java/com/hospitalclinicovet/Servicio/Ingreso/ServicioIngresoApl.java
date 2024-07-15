@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ServicioIngresoApl implements ServicioIngreso {
 
-    private final RepositorioIngreso repositorioIngreso;
+    private RepositorioIngreso repositorioIngreso;
     private MascotaServicio mascotaServicio;
 
     @Override
@@ -35,6 +34,9 @@ public class ServicioIngresoApl implements ServicioIngreso {
                 .orElseThrow(() -> new IllegalArgumentException("Mascota no encontrada"));
         if(!mascota.isActiva()){
             throw new IllegalArgumentException("La mascota no está activa.");
+        }
+        if(!mascota.getDniResponsable().equals(ingresoDTO.getDni())){
+            throw new IllegalArgumentException("Solo el responsable de la mascota puede generar el ingreso.");
         }
         return repositorioIngreso.save(getIngreso(ingresoDTO, mascota));
     }

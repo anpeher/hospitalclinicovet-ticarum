@@ -54,14 +54,16 @@ public class ServicioIngresoTest {
     }
 
     @Test
-    void nuevoIngresoGuardarIngreso() {
+    void nuevoIngresoCorrecto() {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
         ingresoDTO.setIdMascota(1L);
         ingresoDTO.setFechaAlta("2024-07-01");
+        ingresoDTO.setDni("12345478A");
 
         Mascota mascota = new Mascota();
         mascota.setId(1L);
         mascota.setActiva(true);
+        mascota.setDniResponsable("12345478A");
 
         Ingreso ingreso = new Ingreso();
 
@@ -76,6 +78,26 @@ public class ServicioIngresoTest {
     }
 
     @Test
+    void nuevoIngresoDniDistinto() {
+        NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
+        ingresoDTO.setIdMascota(1L);
+        ingresoDTO.setDni("12345478A");
+
+        Mascota mascota = new Mascota();
+        mascota.setId(1L);
+        mascota.setActiva(true);
+        mascota.setDniResponsable("32345478D");
+
+        given(mascotaServicio.ObtenerMascota(1L)).willReturn(Optional.of(mascota));
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> ingresoServicio.nuevoIngreso(ingresoDTO));
+
+        assertEquals("Solo el responsable de la mascota puede generar el ingreso.", exception.getMessage());
+        verify(mascotaServicio, times(1)).ObtenerMascota(1L);
+        verify(repositorioIngreso, times(0)).save(any(Ingreso.class));
+    }
+
+    @Test
     void nuevoIngresoMascotaNoActiva() {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
         ingresoDTO.setIdMascota(1L);
@@ -86,9 +108,7 @@ public class ServicioIngresoTest {
 
         given(mascotaServicio.ObtenerMascota(1L)).willReturn(Optional.of(mascota));
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            ingresoServicio.nuevoIngreso(ingresoDTO);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> ingresoServicio.nuevoIngreso(ingresoDTO));
 
         assertEquals("La mascota no está activa.", exception.getMessage());
         verify(mascotaServicio, times(1)).ObtenerMascota(1L);
