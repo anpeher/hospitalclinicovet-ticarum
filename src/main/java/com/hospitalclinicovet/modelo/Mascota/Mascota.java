@@ -1,5 +1,6 @@
 package com.hospitalclinicovet.modelo.Mascota;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
@@ -43,6 +44,7 @@ public class Mascota {
     private int edad;
 
     @Past(message = "la fecha de nacimiento no puede ser de una fecha futura")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "fecha_nacimiento",nullable = false)
     private LocalDate fechaNacimiento;
 

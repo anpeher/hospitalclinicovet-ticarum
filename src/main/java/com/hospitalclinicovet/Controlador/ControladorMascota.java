@@ -3,6 +3,7 @@ package com.hospitalclinicovet.Controlador;
 
 import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
+import com.hospitalclinicovet.dto.Respuesta.Message;
 import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
 import com.hospitalclinicovet.modelo.Mascota.Mascota;
 import com.hospitalclinicovet.servicio.Mascota.MascotaServicio;
@@ -26,13 +27,13 @@ public class ControladorMascota {
     @PostMapping
     public ResponseEntity guardarMascota(@Valid @RequestBody MascotaDTO mascotaDTO, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }
         try {
             Mascota mascota = mascotaServicio.agregarMascota(mascotaDTO);
             return new ResponseEntity<>(mascota, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -41,9 +42,9 @@ public class ControladorMascota {
         try {
             return new ResponseEntity<>(mascotaServicio.ObtenerMascota(id), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -56,9 +57,9 @@ public class ControladorMascota {
             }
             return new ResponseEntity<>(Ingresos,HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -68,9 +69,9 @@ public class ControladorMascota {
             mascotaServicio.eliminarMascota(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.NOT_FOUND);
         }
 
     }
