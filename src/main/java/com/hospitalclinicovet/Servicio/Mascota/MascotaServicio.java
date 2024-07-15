@@ -1,8 +1,8 @@
-package com.hospitalclinicovet.servicio.Mascota;
+package com.hospitalclinicovet.Servicio.Mascota;
 
 import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
-import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
-import com.hospitalclinicovet.modelo.Mascota.Mascota;
+import com.hospitalclinicovet.Modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.Modelo.Mascota.Mascota;
 
 import java.util.List;
 import java.util.Optional;

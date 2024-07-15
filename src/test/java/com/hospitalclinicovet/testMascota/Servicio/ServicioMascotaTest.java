@@ -2,9 +2,9 @@ package com.hospitalclinicovet.testMascota.Servicio;
 
 import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
-import com.hospitalclinicovet.modelo.Mascota.Mascota;
-import com.hospitalclinicovet.repositorio.RepositorioMascota;
-import com.hospitalclinicovet.servicio.Mascota.ServicioMascotaApl;
+import com.hospitalclinicovet.Modelo.Mascota.Mascota;
+import com.hospitalclinicovet.Repositorio.RepositorioMascota;
+import com.hospitalclinicovet.Servicio.Mascota.ServicioMascotaApl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

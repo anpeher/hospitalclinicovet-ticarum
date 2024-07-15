@@ -1,6 +1,6 @@
-package com.hospitalclinicovet.repositorio;
+package com.hospitalclinicovet.Repositorio;
 
-import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.Modelo.Ingreso.Ingreso;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

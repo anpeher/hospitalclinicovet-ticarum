@@ -1,8 +1,8 @@
-package com.hospitalclinicovet.servicio.Ingreso;
+package com.hospitalclinicovet.Servicio.Ingreso;
 
 import com.hospitalclinicovet.dto.Ingreso.ModIngresoDTO;
 import com.hospitalclinicovet.dto.Ingreso.NuevoIngresoDTO;
-import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.Modelo.Ingreso.Ingreso;
 
 import java.util.List;
 import java.util.Optional;

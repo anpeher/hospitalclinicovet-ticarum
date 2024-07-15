@@ -1,4 +1,4 @@
-package com.hospitalclinicovet.modelo.Mascota;
+package com.hospitalclinicovet.Modelo.Mascota;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;

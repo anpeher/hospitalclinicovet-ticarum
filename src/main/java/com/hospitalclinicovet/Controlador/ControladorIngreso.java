@@ -1,10 +1,12 @@
 package com.hospitalclinicovet.Controlador;
 
 import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
+import com.hospitalclinicovet.Modelo.Ingreso.Estado;
 import com.hospitalclinicovet.dto.Ingreso.ModIngresoDTO;
 import com.hospitalclinicovet.dto.Ingreso.NuevoIngresoDTO;
-import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
-import com.hospitalclinicovet.servicio.Ingreso.ServicioIngreso;
+import com.hospitalclinicovet.dto.Respuesta.Message;
+import com.hospitalclinicovet.Modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.Servicio.Ingreso.ServicioIngreso;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,26 +28,28 @@ public class ControladorIngreso {
     @PostMapping
     public ResponseEntity generarIngreso(@Valid @RequestBody NuevoIngresoDTO ingresoDTO, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }
         try{
             return new ResponseEntity<>(servicioIngreso.nuevoIngreso(ingresoDTO), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @PutMapping("/{idIngreso}")
-    public ResponseEntity ModificarIngreso(@PathVariable("idIngreso") Long id, @RequestBody ModIngresoDTO modIngresoDTO) {
-        try{
-            Optional<Ingreso> ingresoActualizado = servicioIngreso.ModificarIngreso(id, modIngresoDTO);
-            return ingresoActualizado.map(ingreso1 -> new ResponseEntity<>(ingreso1, HttpStatus.OK))
-                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity ModificarIngreso(@PathVariable("idIngreso") Long id,@Valid @RequestBody ModIngresoDTO modIngresoDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(new Message(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()), HttpStatus.BAD_REQUEST);
+        }
+        try {
+            Optional<Ingreso> ingreso = servicioIngreso.ModificarIngreso(id, modIngresoDTO);
+            return ResponseEntity.ok(ingreso);
         } catch (IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -60,7 +64,7 @@ public class ControladorIngreso {
             servicioIngreso.eliminarIngreso(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ResourceNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -1,11 +1,11 @@
-package com.hospitalclinicovet.servicio.Mascota;
+package com.hospitalclinicovet.Servicio.Mascota;
 
 import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
-import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
-import com.hospitalclinicovet.modelo.Mascota.Mascota;
-import com.hospitalclinicovet.repositorio.RepositorioIngreso;
-import com.hospitalclinicovet.repositorio.RepositorioMascota;
+import com.hospitalclinicovet.Modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.Modelo.Mascota.Mascota;
+import com.hospitalclinicovet.Repositorio.RepositorioIngreso;
+import com.hospitalclinicovet.Repositorio.RepositorioMascota;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

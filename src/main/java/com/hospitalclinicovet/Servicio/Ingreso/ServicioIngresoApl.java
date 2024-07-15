@@ -1,13 +1,13 @@
-package com.hospitalclinicovet.servicio.Ingreso;
+package com.hospitalclinicovet.Servicio.Ingreso;
 
 import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Ingreso.ModIngresoDTO;
 import com.hospitalclinicovet.dto.Ingreso.NuevoIngresoDTO;
-import com.hospitalclinicovet.modelo.Ingreso.Estado;
-import com.hospitalclinicovet.modelo.Ingreso.Ingreso;
-import com.hospitalclinicovet.modelo.Mascota.Mascota;
-import com.hospitalclinicovet.repositorio.RepositorioIngreso;
-import com.hospitalclinicovet.servicio.Mascota.MascotaServicio;
+import com.hospitalclinicovet.Modelo.Ingreso.Estado;
+import com.hospitalclinicovet.Modelo.Ingreso.Ingreso;
+import com.hospitalclinicovet.Modelo.Mascota.Mascota;
+import com.hospitalclinicovet.Repositorio.RepositorioIngreso;
+import com.hospitalclinicovet.Servicio.Mascota.MascotaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,25 +41,19 @@ public class ServicioIngresoApl implements ServicioIngreso {
 
     @Override
     public Optional<Ingreso> ModificarIngreso(Long id, ModIngresoDTO modIngresoDTO) {
-        if (!existeIngreso(id)) {
-            throw new IllegalArgumentException("El ingreso no existe.");
-        }
-        return repositorioIngreso.findById(id).map(ingresoMemoria -> {
+        return Optional.ofNullable(repositorioIngreso.findById(id).map(ingreso -> {
             if (modIngresoDTO.getFechaFinalizacion() != null) {
-                ingresoMemoria.setFechaFinalizacion(stringToDate(modIngresoDTO.getFechaFinalizacion()));
+                ingreso.setFechaFinalizacion(stringToDate(modIngresoDTO.getFechaFinalizacion()));
             }
-            if (modIngresoDTO.getEstado() != null){
-                if (!EnumSet.of(Estado.ALTA, Estado.HOSPITALIZACION, Estado.FINALIZADO).contains(modIngresoDTO.getEstado())) {
-                    throw new IllegalArgumentException("Estado inválido.");
+            if (modIngresoDTO.getEstado() != null) {
+                Estado estadoJSON = Estado.valueOf(modIngresoDTO.getEstado());
+                if (estadoJSON == Estado.FINALIZADO && ingreso.getFechaFinalizacion() == null) {
+                    throw new IllegalArgumentException("Un ingreso en estado FINALIZADO debe tener una fecha de finalización.");
                 }
-                if (modIngresoDTO.getEstado() == Estado.FINALIZADO && ingresoMemoria.getFechaFinalizacion() == null) {
-                    throw new IllegalArgumentException("Un ingreso al que deseas cambiar el estado ha \"FINALIZADO\" debe tener una fecha de finalización.");
-                }
-                ingresoMemoria.setEstado(modIngresoDTO.getEstado());
+                ingreso.setEstado(estadoJSON);
             }
-            return repositorioIngreso.save(ingresoMemoria);
-        });
-
+            return repositorioIngreso.save(ingreso);
+        }).orElseThrow(() -> new ResourceNotFoundException("El ingreso no existe.")));
     }
 
     @Override
@@ -77,13 +71,7 @@ public class ServicioIngresoApl implements ServicioIngreso {
         ingreso.setDniResponsable(mascota.getDniResponsable());
         return ingreso;
     }
-    private boolean existeIngreso(Long id){
-        if (repositorioIngreso.existsById(id)) {
-            return true;
-        } else {
-            throw new ResourceNotFoundException("El ingreso no existe.");
-        }
-    }
+
 
     private static LocalDate stringToDate(String fechaString){
         try {
