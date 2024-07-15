@@ -25,10 +25,7 @@ public class MascotaDTO {
     @Transient
     private int edad;
 
-    @NotNull(message = "La fecha de nacimiento es obligatoria")
-    @NotBlank(message = "La fecha de nacimiento es obligatoria")
     @ValidDate
-    @Pattern(regexp = "^20\\d{2}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])$", message = "Formato de fecha inválido, debe ser yyyy-MM-dd")
     private String fechaNacimiento;
 
     @NotNull(message = "el codigo de identificaciónes obligatorio")

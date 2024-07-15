@@ -60,7 +60,7 @@ public class ServicioIngresoApl implements ServicioIngreso {
 
     @Override
     public void eliminarIngreso(Long id) {
-        Ingreso ingreso = repositorioIngreso.findById(id).orElseThrow(() ->  new IllegalArgumentException("Ingreso no existe"));
+        Ingreso ingreso = repositorioIngreso.findById(id).orElseThrow(() ->  new ResourceNotFoundException("Ingreso no existe"));
         ingreso.setEstado(Estado.ANULADO);
         repositorioIngreso.save(ingreso);
     }

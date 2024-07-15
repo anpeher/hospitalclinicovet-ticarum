@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target({ ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidDate {
-    String message() default "La fecha seleccionada es superior a la actual, por tanto es invalida";
+    String message() default "La fecha no puede ser nula, vacía o superior a la actual. Formato obligatorio yyyy-mm-dd";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

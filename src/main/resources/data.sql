@@ -2,7 +2,9 @@
 INSERT INTO mascota (especie, raza, fecha_nacimiento, codigo_identificacion, dni_responsable, activa)
 VALUES
 ('Perro', 'Labrador', '2020-04-10', '123ABC', '12345678A', TRUE),
-('Gato', 'Siamés', '2016-04-02', '123ERT', '87654321B', TRUE);
+('Gato', 'Siamés', '2016-04-02', '123ERT', '87654321B', TRUE),
+('Pajaro', 'Colibri', '2017-04-02', '143ERT', '87884321B', FALSE),
+('Tortuga', 'Parda', '2010-04-02', '169ERT', '87884321B', TRUE);
 
 INSERT INTO ingreso (fecha_alta, fecha_finalizacion, estado, mascota_id, dni_registrador)
 VALUES
