@@ -1,0 +1,363 @@
+{
+	"info": {
+		"_postman_id": "0e5af65f-092d-4f0f-902a-2434cc9c91cb",
+		"name": "hospitalclinicovet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23133432"
+	},
+	"item": [
+		{
+			"name": "Mascota",
+			"item": [
+				{
+					"name": "ValidacionDatosYErrores",
+					"item": [
+						{
+							"name": "RegistrarMascota Sin DNI",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"especie\": \"perro\",\r\n  \"raza\": \"salchicha\",\r\n  \"fechaNacimiento\": \"2023-12-10\",\r\n  \"codigoIdentificacion\": \"872ABD\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/mascota"
+							},
+							"response": []
+						},
+						{
+							"name": "RegistrarMascota Codigo repetido",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"especie\": \"perro\",\r\n  \"raza\": \"salchicha\",\r\n  \"fechaNacimiento\": \"2023-12-10\",\r\n  \"codigoIdentificacion\": \"123ABC\",\r\n  \"dniResponsable\": \"12345678A\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/mascota"
+							},
+							"response": []
+						},
+						{
+							"name": "RegistrarMascota mal formato fecha",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"especie\": \"perro\",\r\n  \"raza\": \"salchicha\",\r\n  \"fechaNacimiento\": \"20210\",\r\n  \"codigoIdentificacion\": \"872ABD\",\r\n  \"dniResponsable\": \"12345678A\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/mascota"
+							},
+							"response": []
+						},
+						{
+							"name": "DatosMascota Anulada",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/mascota/3"
+							},
+							"response": []
+						},
+						{
+							"name": "AnularMascota Inexistente",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "http://localhost:8080/mascota/99"
+							},
+							"response": []
+						},
+						{
+							"name": "IngresosMascota Sin ingresos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/mascota/4/ingreso"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DatosMascota",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/mascota/1"
+					},
+					"response": []
+				},
+				{
+					"name": "RegistrarMascota",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"especie\": \"perro\",\r\n  \"raza\": \"salchicha\",\r\n  \"fechaNacimiento\": \"2023-12-10\",\r\n  \"codigoIdentificacion\": \"872ABD\",\r\n  \"dniResponsable\": \"12345678A\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/mascota"
+					},
+					"response": []
+				},
+				{
+					"name": "AnularMascota",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/mascota/1"
+					},
+					"response": []
+				},
+				{
+					"name": "IngresosMascota",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/mascota/1/ingreso"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ingreso",
+			"item": [
+				{
+					"name": "ValidacionDatosYErrores",
+					"item": [
+						{
+							"name": "NuevoIngreso Sin fecha",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"idMascota\": 1,\r\n  \"dni\": \"12345678A\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/ingreso"
+							},
+							"response": []
+						},
+						{
+							"name": "NuevoIngreso DNI distinto al de la mascota",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fechaAlta\": \"207-12\",\r\n  \"idMascota\": 1,\r\n  \"dni\": \"12355678A\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/ingreso"
+							},
+							"response": []
+						},
+						{
+							"name": "NuevoIngreso Mascota no activa",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fechaAlta\": \"2024-07-12\",\r\n  \"idMascota\": 3,\r\n  \"dni\": \"87884321B\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/ingreso"
+							},
+							"response": []
+						},
+						{
+							"name": "CambiarIngreso(Estado) Sin fecha finalizacion",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"estado\": \"FINALIZADO\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/ingreso/2"
+							},
+							"response": []
+						},
+						{
+							"name": "CambiarIngreso(Estado) Estado Invalido",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"estado\": \"error\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/ingreso/2"
+							},
+							"response": []
+						},
+						{
+							"name": "CambiarIngreso(fechaBaja) fechaInvalida",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fechaFinalizacion\": \"2-07-19\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/ingreso/3"
+							},
+							"response": []
+						},
+						{
+							"name": "AnularIngreso Inexistente",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "http://localhost:8080/ingreso/99"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ListarIngresos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/ingreso"
+					},
+					"response": []
+				},
+				{
+					"name": "NuevoIngreso",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fechaAlta\": \"2024-07-12\",\r\n  \"idMascota\": 1,\r\n  \"dni\": \"12345678A\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/ingreso"
+					},
+					"response": []
+				},
+				{
+					"name": "CambiarIngreso(Estado)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"estado\": \"FINALIZADO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/ingreso/3"
+					},
+					"response": []
+				},
+				{
+					"name": "CambiarIngreso(fechaBaja)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fechaFinalizacion\": \"2024-07-19\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/ingreso/3"
+					},
+					"response": []
+				},
+				{
+					"name": "CambiarIngreso(fechaBaja y estado)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"estado\": \"HOSPITALIZACION\", \r\n  \"fechaFinalizacion\": \"2024-07-23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/ingreso/3"
+					},
+					"response": []
+				},
+				{
+					"name": "AnularIngreso",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/ingreso/3"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
