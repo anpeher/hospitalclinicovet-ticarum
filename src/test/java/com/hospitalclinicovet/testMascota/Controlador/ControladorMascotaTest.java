@@ -26,6 +26,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Clase de prueba para el controlador de mascotas.
+ */
 @WebMvcTest(ControladorMascota.class)
 public class ControladorMascotaTest {
     @Autowired
@@ -42,6 +45,10 @@ public class ControladorMascotaTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(new ControladorMascota(servicioMascota)).build();
     }
 
+    /**
+     * Prueba que verifica la creación correcta de una mascota.
+     * @throws Exception en caso de error en la petición
+     */
     @Test
     void testCrearMascotaCorrectamente() throws Exception {
         MascotaDTO mascotaDTO = new MascotaDTO();
@@ -71,6 +78,10 @@ public class ControladorMascotaTest {
                 .andExpect(jsonPath("$.dniResponsable").value("45675467S"));
     }
 
+    /**
+     * Prueba que verifica el error de creación de una mascota con un código de identificación incorrecto.
+     * @throws Exception en caso de error en la petición
+     */
     @Test
     void testCrearMascotaMalCodigo() throws Exception {
         MascotaDTO mascotaDTO = new MascotaDTO();
@@ -90,6 +101,10 @@ public class ControladorMascotaTest {
                 .andExpect(jsonPath("$.message").value("formato codigo de identificacion invalido, debe ser tres numeros y tres letras en mayúscula"));
     }
 
+    /**
+     * Prueba que verifica la búsqueda correcta de una mascota.
+     * @throws Exception en caso de error en la petición
+     */
     @Test
     void testBuscarMascotaCorrectamente() throws Exception {
         Long id = 1L;
@@ -114,6 +129,10 @@ public class ControladorMascotaTest {
                 .andExpect(jsonPath("$.dniResponsable").value("45675467S"));
     }
 
+    /**
+     * Prueba que verifica la respuesta cuando se busca una mascota inexistente.
+     * @throws Exception en caso de error en la petición
+     */
     @Test
     void testBuscarMascotaInexistente() throws Exception {
         Long id = 50L;
@@ -126,6 +145,10 @@ public class ControladorMascotaTest {
                 .andExpect(jsonPath("$.message").value("La mascota no existe."));
     }
 
+    /**
+     * Prueba que verifica la respuesta cuando una mascota no tiene ingresos.
+     * @throws Exception en caso de error en la petición
+     */
     @Test
     void testMascotaConIngresoInexistente() throws Exception {
         Long id = 1L;
@@ -137,6 +160,10 @@ public class ControladorMascotaTest {
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Prueba que verifica la eliminación correcta de una mascota.
+     * @throws Exception en caso de error en la petición
+     */
     @Test
     void testEliminarCorrectamenteMascota() throws Exception {
         Long id = 1L;
@@ -147,6 +174,5 @@ public class ControladorMascotaTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-
-
 }
+

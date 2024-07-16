@@ -30,6 +30,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Clase de pruebas para el controlador {@link ControladorIngreso}.
+ */
 @WebMvcTest(ControladorIngreso.class)
 public class ControladorIngresoTest {
 
@@ -47,6 +50,10 @@ public class ControladorIngresoTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(new ControladorIngreso(servicioIngreso)).build();
     }
 
+    /**
+     * Prueba para verificar que un ingreso se genera correctamente.
+     * @throws Exception si ocurre un error durante la ejecucion de la prueba.
+     */
     @Test
     void testGenerarIngresoCorrectamente() throws Exception {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
@@ -84,6 +91,10 @@ public class ControladorIngresoTest {
                 .andExpect(jsonPath("$.dniResponsable").value("12345678A"));
     }
 
+    /**
+     * Prueba para verificar que se maneja correctamente un DNI con formato incorrecto al generar un ingreso.
+     * @throws Exception si ocurre un error durante la ejecucion de la prueba.
+     */
     @Test
     void testGenerarIngresoMalFormatoDNI() throws Exception {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
@@ -101,6 +112,10 @@ public class ControladorIngresoTest {
 
     }
 
+    /**
+     * Prueba para verificar que un ingreso se elimina correctamente.
+     * @throws Exception si ocurre un error durante la ejecucion de la prueba.
+     */
     @Test
     void testEliminarIngresoCorrectamente() throws Exception {
         Long ingresoId = 1L;
@@ -110,6 +125,10 @@ public class ControladorIngresoTest {
                 .andExpect(status().isOk());
     }
 
+    /**
+     * Prueba para verificar que se pueden listar los ingresos correctamente.
+     * @throws Exception si ocurre un error durante la ejecucion de la prueba.
+     */
     @Test
     void testListarIngresos() throws Exception {
         given(servicioIngreso.listaIngresos()).willReturn(Arrays.asList(new Ingreso(), new Ingreso()));
@@ -120,6 +139,10 @@ public class ControladorIngresoTest {
                 .andExpect(jsonPath("$", hasSize(2)));
     }
 
+    /**
+     * Prueba para verificar que un ingreso se modifica correctamente.
+     * @throws Exception si ocurre un error durante la ejecucion de la prueba.
+     */
     @Test
     void testModificarIngresoEstado() throws Exception {
         ModIngresoDTO modIngresoDTO = new ModIngresoDTO();
@@ -150,6 +173,10 @@ public class ControladorIngresoTest {
                 .andExpect(jsonPath("$.estado").value("ALTA"));
     }
 
+    /**
+     * Prueba para verificar que se maneja correctamente un estado incorrecto al modificar un ingreso.
+     * @throws Exception si ocurre un error durante la ejecucion de la prueba.
+     */
     @Test
     void testModificarIngresoEstadoIncorrecto() throws Exception {
         ModIngresoDTO modIngresoDTO = new ModIngresoDTO();
@@ -163,6 +190,5 @@ public class ControladorIngresoTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Estado inválido"));
     }
-
 
 }

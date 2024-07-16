@@ -25,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+/**
+ * Clase de prueba para el servicio de ingresos.
+ */
 public class ServicioIngresoTest {
 
     @Mock
@@ -41,6 +44,9 @@ public class ServicioIngresoTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Prueba que verifica que el método listaIngresos retorna una lista de ingresos correctamente.
+     */
     @Test
     void testListaIngresosRetornaListaIngresos() {
         List<Ingreso> ingresos = Arrays.asList(new Ingreso(), new Ingreso());
@@ -53,6 +59,9 @@ public class ServicioIngresoTest {
         verify(repositorioIngreso).findAll();
     }
 
+    /**
+     * Prueba que verifica que se crea un nuevo ingreso correctamente.
+     */
     @Test
     void testNuevoIngresoCorrecto() {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
@@ -77,6 +86,9 @@ public class ServicioIngresoTest {
         verify(repositorioIngreso, times(1)).save(any(Ingreso.class));
     }
 
+    /**
+     * Prueba que verifica que se lanza una excepción si el DNI del responsable es distinto.
+     */
     @Test
     void testNuevoIngresoDniDistinto() {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
@@ -97,6 +109,9 @@ public class ServicioIngresoTest {
         verify(repositorioIngreso, times(0)).save(any(Ingreso.class));
     }
 
+    /**
+     * Prueba que verifica que se lanza una excepción si la mascota no está activa.
+     */
     @Test
     void testNuevoIngresoMascotaNoActiva() {
         NuevoIngresoDTO ingresoDTO = new NuevoIngresoDTO();
@@ -115,6 +130,9 @@ public class ServicioIngresoTest {
         verify(repositorioIngreso, times(0)).save(any(Ingreso.class));
     }
 
+    /**
+     * Prueba que verifica que se modifica un ingreso correctamente.
+     */
     @Test
     void testModificarIngresoCorrectamente() {
         Long id = 1L;
@@ -136,5 +154,4 @@ public class ServicioIngresoTest {
         verify(repositorioIngreso, times(1)).findById(id);
         verify(repositorioIngreso, times(1)).save(any(Ingreso.class));
     }
-
 }
