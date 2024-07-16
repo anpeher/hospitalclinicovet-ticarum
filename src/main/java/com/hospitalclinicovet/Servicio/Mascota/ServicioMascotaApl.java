@@ -27,6 +27,7 @@ public class ServicioMascotaApl implements ServicioMascota {
     private final RepositorioMascota repositorioMascota;
     private final RepositorioIngreso repositorioIngreso;
 
+
     /**
      * Agrega una nueva mascota recibiendo los datos del formato JSON {@link MascotaDTO}.
      * La mascota se crea por defecto con la variable activa a true pero si la pone a false no se pueden hacer mas operacion con ella. Aun así se retornará un código 400 bad request em vez del 404. Para decir que aunque no se pueda acceder a su información el registro sigue en memoria.
