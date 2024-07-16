@@ -6,7 +6,7 @@ import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
 import com.hospitalclinicovet.dto.Respuesta.Message;
 import com.hospitalclinicovet.Modelo.Ingreso.Ingreso;
 import com.hospitalclinicovet.Modelo.Mascota.Mascota;
-import com.hospitalclinicovet.Servicio.Mascota.MascotaServicio;
+import com.hospitalclinicovet.Servicio.Mascota.ServicioMascota;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,7 +29,7 @@ import java.util.Objects;
 @Tag(name = "Controlador de mascotas", description = "Endpoints para guardar la información sobre una mascota registrada en el hospital clínico")
 public class ControladorMascota {
 
-    private final MascotaServicio mascotaServicio;
+    private final ServicioMascota servicioMascota;
 
 
     @Operation(summary = "Registro de una nueva mascota",
@@ -46,7 +46,7 @@ public class ControladorMascota {
             return new ResponseEntity<>(new Message(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }
         try {
-            Mascota mascota = mascotaServicio.agregarMascota(mascotaDTO);
+            Mascota mascota = servicioMascota.agregarMascota(mascotaDTO);
             return new ResponseEntity<>(mascota, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -66,7 +66,7 @@ public class ControladorMascota {
     @GetMapping("/{idMascota}")
     public ResponseEntity obtenerMascota(@PathVariable("idMascota") Long id){
         try {
-            return new ResponseEntity<>(mascotaServicio.obtenerMascota(id), HttpStatus.OK);
+            return new ResponseEntity<>(servicioMascota.obtenerMascota(id), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException e) {
@@ -89,7 +89,7 @@ public class ControladorMascota {
     @GetMapping("/{idIngreso}/ingreso")
     public ResponseEntity ingresosMascota(@PathVariable("idIngreso") Long id){
         try {
-            List<Ingreso> Ingresos = mascotaServicio.listarIngresoMascotas(id);
+            List<Ingreso> Ingresos = servicioMascota.listarIngresoMascotas(id);
             if (Ingresos.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -114,7 +114,7 @@ public class ControladorMascota {
     @DeleteMapping("/{idMascota}")
     public ResponseEntity eliminarMascota(@PathVariable("idMascota") Long id){
         try {
-            mascotaServicio.eliminarMascota(id);
+            servicioMascota.eliminarMascota(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);

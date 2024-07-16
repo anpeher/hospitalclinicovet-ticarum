@@ -6,7 +6,7 @@ import com.hospitalclinicovet.Modelo.Mascota.Mascota;
 import com.hospitalclinicovet.Repositorio.RepositorioIngreso;
 import com.hospitalclinicovet.Servicio.Ingreso.ServicioIngresoApl;
 
-import com.hospitalclinicovet.Servicio.Mascota.MascotaServicio;
+import com.hospitalclinicovet.Servicio.Mascota.ServicioMascota;
 import com.hospitalclinicovet.dto.Ingreso.ModIngresoDTO;
 import com.hospitalclinicovet.dto.Ingreso.NuevoIngresoDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ public class ServicioIngresoTest {
     private RepositorioIngreso repositorioIngreso;
 
     @Mock
-    private MascotaServicio mascotaServicio;
+    private ServicioMascota servicioMascota;
 
     @InjectMocks
     private ServicioIngresoApl ingresoServicio;
@@ -67,13 +67,13 @@ public class ServicioIngresoTest {
 
         Ingreso ingreso = new Ingreso();
 
-        given(mascotaServicio.obtenerMascota(1L)).willReturn(Optional.of(mascota));
+        given(servicioMascota.obtenerMascota(1L)).willReturn(Optional.of(mascota));
         given(repositorioIngreso.save(any(Ingreso.class))).willReturn(ingreso);
 
         Ingreso resultado = ingresoServicio.nuevoIngreso(ingresoDTO);
 
         assertNotNull(resultado);
-        verify(mascotaServicio, times(1)).obtenerMascota(1L);
+        verify(servicioMascota, times(1)).obtenerMascota(1L);
         verify(repositorioIngreso, times(1)).save(any(Ingreso.class));
     }
 
@@ -88,12 +88,12 @@ public class ServicioIngresoTest {
         mascota.setActiva(true);
         mascota.setDniResponsable("32345478D");
 
-        given(mascotaServicio.obtenerMascota(1L)).willReturn(Optional.of(mascota));
+        given(servicioMascota.obtenerMascota(1L)).willReturn(Optional.of(mascota));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> ingresoServicio.nuevoIngreso(ingresoDTO));
 
         assertEquals("Solo el responsable de la mascota puede generar el ingreso.", exception.getMessage());
-        verify(mascotaServicio, times(1)).obtenerMascota(1L);
+        verify(servicioMascota, times(1)).obtenerMascota(1L);
         verify(repositorioIngreso, times(0)).save(any(Ingreso.class));
     }
 
@@ -106,12 +106,12 @@ public class ServicioIngresoTest {
         mascota.setId(1L);
         mascota.setActiva(false);
 
-        given(mascotaServicio.obtenerMascota(1L)).willReturn(Optional.of(mascota));
+        given(servicioMascota.obtenerMascota(1L)).willReturn(Optional.of(mascota));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> ingresoServicio.nuevoIngreso(ingresoDTO));
 
         assertEquals("La mascota no está activa.", exception.getMessage());
-        verify(mascotaServicio, times(1)).obtenerMascota(1L);
+        verify(servicioMascota, times(1)).obtenerMascota(1L);
         verify(repositorioIngreso, times(0)).save(any(Ingreso.class));
     }
 

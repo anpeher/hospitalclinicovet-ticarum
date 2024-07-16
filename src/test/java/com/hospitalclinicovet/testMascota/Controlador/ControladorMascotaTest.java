@@ -5,7 +5,7 @@ import com.hospitalclinicovet.Controlador.ControladorMascota;
 import com.hospitalclinicovet.Excepciones.ResourceNotFoundException;
 import com.hospitalclinicovet.dto.Mascota.MascotaDTO;
 import com.hospitalclinicovet.Modelo.Mascota.Mascota;
-import com.hospitalclinicovet.Servicio.Mascota.MascotaServicio;
+import com.hospitalclinicovet.Servicio.Mascota.ServicioMascota;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +32,14 @@ public class ControladorMascotaTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private MascotaServicio mascotaServicio;
+    private ServicioMascota servicioMascota;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new ControladorMascota(mascotaServicio)).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new ControladorMascota(servicioMascota)).build();
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ControladorMascotaTest {
         mascota.setCodigoIdentificacion("234ASD");
         mascota.setDniResponsable("45675467S");
 
-        given(mascotaServicio.agregarMascota(any(MascotaDTO.class))).willReturn(mascota);
+        given(servicioMascota.agregarMascota(any(MascotaDTO.class))).willReturn(mascota);
 
         mockMvc.perform(post("/mascota")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +80,7 @@ public class ControladorMascotaTest {
         mascotaDTO.setCodigoIdentificacion("234ASrtrD");
         mascotaDTO.setDniResponsable("45675467S");
 
-        given(mascotaServicio.agregarMascota(any(MascotaDTO.class)))
+        given(servicioMascota.agregarMascota(any(MascotaDTO.class)))
                 .willThrow(new IllegalArgumentException());
 
         mockMvc.perform(post("/mascota")
@@ -101,7 +101,7 @@ public class ControladorMascotaTest {
         mascota.setCodigoIdentificacion("234ASD");
         mascota.setDniResponsable("45675467S");
 
-        given(mascotaServicio.obtenerMascota(id)).willReturn(Optional.of(mascota));
+        given(servicioMascota.obtenerMascota(id)).willReturn(Optional.of(mascota));
 
         mockMvc.perform(get("/mascota/{idMascota}", id)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -118,7 +118,7 @@ public class ControladorMascotaTest {
     void testBuscarMascotaInexistente() throws Exception {
         Long id = 50L;
 
-        given(mascotaServicio.obtenerMascota(id)).willThrow(new ResourceNotFoundException("La mascota no existe."));
+        given(servicioMascota.obtenerMascota(id)).willThrow(new ResourceNotFoundException("La mascota no existe."));
 
         mockMvc.perform(get("/mascota/{idMascota}", id)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -130,7 +130,7 @@ public class ControladorMascotaTest {
     void testMascotaConIngresoInexistente() throws Exception {
         Long id = 1L;
 
-        given(mascotaServicio.listarIngresoMascotas(id)).willReturn(Collections.emptyList());
+        given(servicioMascota.listarIngresoMascotas(id)).willReturn(Collections.emptyList());
 
         mockMvc.perform(get("/mascota/{idIngreso}/ingreso", id)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -141,7 +141,7 @@ public class ControladorMascotaTest {
     void testEliminarCorrectamenteMascota() throws Exception {
         Long id = 1L;
 
-        doNothing().when(mascotaServicio).eliminarMascota(id);
+        doNothing().when(servicioMascota).eliminarMascota(id);
 
         mockMvc.perform(delete("/mascota/{idMascota}", id)
                         .contentType(MediaType.APPLICATION_JSON))
