@@ -32,13 +32,13 @@ public class ServicioMascotaApl implements ServicioMascota {
      * La mascota se crea por defecto con la variable activa a true pero si la pone a false no se pueden hacer mas operacion con ella. Aun así se retornará un código 400 bad request em vez del 404. Para decir que aunque no se pueda acceder a su información el registro sigue en memoria.
      * @param mascotaDTO datos de la mascota a crear.
      * @return la nueva mascota agregada.
-     * @throws IllegalArgumentException si el código de identificación ya existe.
+     * @throws IllegalArgumentException si el codigo de identificacion ya existe.
      */
     @Override
     public Mascota agregarMascota(MascotaDTO mascotaDTO) {
         Optional<Mascota> existingMascota = repositorioMascota.findByCodigoIdentificacion(mascotaDTO.getCodigoIdentificacion());
         if (existingMascota.isPresent()) {
-            throw new IllegalArgumentException("El código de identificación ya existe.");
+            throw new IllegalArgumentException("El codigo de identificacion ya existe.");
         }
         return repositorioMascota.save(getMascota(mascotaDTO));
     }
